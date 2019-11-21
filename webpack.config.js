@@ -12,7 +12,7 @@ const paths = {
 
 module.exports = {
   context: paths.src,
-  entry: ['./app.js', './main.scss'],
+  entry: ['./app.js', './main.scss',],
   output: {
     filename: 'app.bundle.js',
     path: paths.dist,
@@ -20,6 +20,15 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.csv$/,
+        loader: 'csv-loader',
+        options: {
+          dynamicTyping: true,
+          header: true,
+          skipEmptyLines: true
+        }
+      },
       {
         test: /\.js$/,
         exclude: [/node_modules/],
