@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --hot --inline --progress",
-    "run": "kill -9 $(lsof -t -i:4800) && ./node_modules/.bin/webpack-dev-server --hot --inline --progress",
+    "restart": "kill -9 $(lsof -t -i:4800) && ./node_modules/.bin/webpack-dev-server --hot --inline --progress",
     "build": "webpack -p --config webpack.prod.config.js --hide-modules"
   },
   "repository": {

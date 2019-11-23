@@ -25,8 +25,6 @@ let colorScale = d3.scaleQuantile()
 let path = d3.geoPath()
   .projection(d3.geoAlbersUsa())
 
-console.log(path)
-
 let svg = document
   .createElementNS("http://www.w3.org/2000/svg", "svg");
 
@@ -34,38 +32,34 @@ document.body.appendChild(svg)
 
 // Map with US Power Production 
 d3.select("svg")
-  .selectAll("path")
+  .selectAll("g.state")
   .data(geoJsonData.features)
   .enter()
+  .append("g")
+  .attr("class", "state")
   .append("path")
   .attr("d", path)
   .style("fill", d => colorScale(d.energy["Production, U.S. Share"]))
-  .attr("class", "state")
-  
-
-
-d3.selectAll(".state")
-  .append("g")
-  .attr("transform", d=>{
-   let position=path.centroid(d)
-   return `translate(${position[0]} ${position[1]})`
+  .on('mouseover', function(d, i) {
+    var currentState = this;
+    d3.select(this).style('fill-opacity', 1);
   })
-  .attr("width", 50)
-  .attr("height", 10)
+  .on('mouseout', function(d, i) {
+    d3.selectAll('path')
+      .style('fill-opacity',.7)
+  });
 
+
+d3.selectAll("g.state")
   .append("text")
-  // .attr("x", d=>)
-  // .attr("y",d=> path.centroid(d)[1])
+  .attr("class", 'stateName')
+  .attr("x", d=>path.centroid(d)[0])
+  .attr("y",d=> path.centroid(d)[1])
+  .attr("text-anchor", "middle" )
   .attr("font-family", "sans-serif")
   .attr("font-size", "10px")
   .attr("fill", "black")
   .text(d=>d.properties.NAME)
-  .on("mouseover", function(d){
-
-  })
-  .on("mouseout", function(d){
-
-  });
 
 
 // Legend
