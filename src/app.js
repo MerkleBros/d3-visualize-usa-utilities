@@ -46,10 +46,16 @@ d3.select("svg")
 
 d3.selectAll(".state")
   .append("g")
-  // .attr("transform", "translate(102 0)")
+  .attr("transform", d=>{
+   let position=path.centroid(d)
+   return `translate(${position[0]} ${position[1]})`
+  })
+  .attr("width", 50)
+  .attr("height", 10)
+
   .append("text")
-  .attr("x", d=>path.centroid(d)[0])
-  .attr("y",d=> path.centroid(d)[1])
+  // .attr("x", d=>)
+  // .attr("y",d=> path.centroid(d)[1])
   .attr("font-family", "sans-serif")
   .attr("font-size", "10px")
   .attr("fill", "black")

@@ -4,7 +4,8 @@
   "description": "Basic D3.js project for learning purposes",
   "main": "src/app.js",
   "scripts": {
-    "start": "kill -9 $(lsof -t -i:4800) && ./node_modules/.bin/webpack-dev-server --hot --inline --progress",
+    "start": "./node_modules/.bin/webpack-dev-server --hot --inline --progress",
+    "run": "kill -9 $(lsof -t -i:4800) && ./node_modules/.bin/webpack-dev-server --hot --inline --progress",
     "build": "webpack -p --config webpack.prod.config.js --hide-modules"
   },
   "repository": {
