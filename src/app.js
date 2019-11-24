@@ -8,7 +8,20 @@ geoJsonData.features.forEach((feature) => {
     return obj.State == abbreviateState(feature.properties.NAME, "abbr")
   }) 
   feature.energy = data
+  feature.area=getStateArea(feature.geometry.coordinates)
 })
+
+function getStateArea(arr){
+  if (arr.length>1){
+    return arr.map(subArr=> getStateArea(subArr))
+              .reduce((acc,area)=>acc+area,0)
+  }
+  return arr.map(path=>d3.polygonArea(path))
+            .reduce((acc,area)=>acc+area,0)
+}
+
+
+console.log(geoJsonData.features)
 
 // Make a chloropleth for U.S States' share of power production
 let domain = geoJsonData.features.map(
@@ -59,7 +72,7 @@ d3.selectAll("g.state")
   .attr("font-family", "sans-serif")
   .attr("font-size", "10px")
   .attr("fill", "black")
-  .text(d=>d.properties.NAME)
+  .text(d=>d.area>7? d.properties.NAME : d.energy.State)
 
 
 // Legend
