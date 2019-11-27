@@ -54,12 +54,10 @@ d3.select("svg")
   .attr("d", path)
   .style("fill", d => colorScale(d.energy["Production, U.S. Share"]))
   .on('mouseover', function(d, i) {
-    var currentState = this;
-    d3.select(this).style('fill-opacity', 1);
+    d3.select(this).style('fill', "rgb(225, 202, 131)");
   })
   .on('mouseout', function(d, i) {
-    d3.selectAll('path')
-      .style('fill-opacity',.7)
+    d3.select(this).style("fill", d => colorScale(d.energy["Production, U.S. Share"]))
   });
 
 
