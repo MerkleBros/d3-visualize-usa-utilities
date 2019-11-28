@@ -23,7 +23,7 @@ function getStateArea(arr){
 
 console.log(geoJsonData.features)
 
-// Make a chloropleth for U.S States' share of power production
+// Make a choropleth for U.S States' share of power production
 let domain = geoJsonData.features.map(
   (feature) => feature.energy["Production, U.S. Share"])
 
@@ -70,6 +70,7 @@ d3.selectAll("g.state")
   .attr("font-family", "sans-serif")
   .attr("font-size", "10px")
   .attr("fill", "black")
+  .attr("pointer-events", "none")
   .text(d=>d.area>7? d.properties.NAME : d.energy.State)
 
 
@@ -86,8 +87,8 @@ d3.select("g#main")
   .attr("width", 100)
   .attr("height", 135)
   .attr("transform", "translate(100 0)")
- .style("stroke", "black")
- .style("stroke-width", 1)
+  .style("stroke", "black")
+  .style("stroke-width", 1)
 
 // Legend boxes
 let legend = d3
@@ -120,7 +121,7 @@ let legendTextLabels =
     return i * 20+12;
   })
   .text( function (d) {
-    let range =colorScale.invertExtent(d)
+    let range = colorScale.invertExtent(d)
     return range[0]+' - '+range[1]
   })
   .attr("font-family", "sans-serif")
