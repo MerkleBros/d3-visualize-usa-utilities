@@ -20,7 +20,6 @@ function getStateArea(arr){
             .reduce((acc,area)=>acc+area,0)
 }
 
-
 console.log(geoJsonData.features)
 
 // Make a choropleth for U.S States' share of power production
@@ -44,7 +43,7 @@ let svg = document
 document.body.appendChild(svg)
 
 // Map with US Power Production 
-d3.select("svg")
+let state = d3.select("svg")
   .selectAll("g.state")
   .data(geoJsonData.features)
   .enter()
@@ -61,7 +60,8 @@ d3.select("svg")
   });
 
 
-d3.selectAll("g.state")
+// State name text
+let stateNameText = d3.selectAll("g.state")
   .append("text")
   .attr("class", 'stateName')
   .attr("x", d=>path.centroid(d)[0])
@@ -69,10 +69,34 @@ d3.selectAll("g.state")
   .attr("text-anchor", "middle" )
   .attr("font-family", "sans-serif")
   .attr("font-size", "10px")
-  .attr("fill", "black")
+  .attr("fill", "white")
   .attr("pointer-events", "none")
   .text(d=>d.area>7? d.properties.NAME : d.energy.State)
 
+// State name backgrounds 
+d3.selectAll(".state")
+  .selectAll("text")
+  .each(function(d, i) {
+    d.bb = this.getBBox()
+  })
+
+const paddingLeftRight = 5
+const paddingTopBottom = 2
+
+let stateNameBackground = d3.selectAll(".state")
+  .append("rect")
+  .attr("x", function(d) { 
+    let x = d3.select(this.parentNode).select("text").attr("x")
+    return x - d.bb.width/2 - paddingLeftRight/2;
+  })
+  .attr("y", function(d) { 
+    let y = d3.select(this.parentNode).select("text").attr("y") 
+    return y - d.bb.height + paddingTopBottom/2;
+  })
+  .attr("width", function(d) { return d.bb.width + paddingLeftRight; })
+  .attr("height", function(d) { return d.bb.height + paddingTopBottom; })
+  .attr("fill", "black")
+  .attr("pointer-events", "none")
 
 // Legend
 d3.select("svg")
@@ -127,3 +151,8 @@ let legendTextLabels =
   .attr("font-family", "sans-serif")
   .attr("font-size", "10px")
   .attr("fill", "black");
+
+// D3 selection.raise and selection.lower to change painting order
+state.raise()
+stateNameBackground.raise()
+stateNameText.raise()
